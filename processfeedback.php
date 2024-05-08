@@ -1,34 +1,43 @@
 <?php
+// Create short variable names
+$name = $_POST['name'];
+$email = $_POST['email'];
+$feedback = $_POST['feedback'];
 
-//create short variable names
-$name=$_POST['name'];
-$email=$_POST['email'];
-$feedback=$_POST['feedback'];
+// Replace newlines and carriage returns in the feedback with spaces
+$feedback = str_replace(array("\r\n", "\n", "\r"), ' ', $feedback);
 
-//set up some static information
+// Set up some static information
 $toaddress = "feedback@example.com";
-
 $subject = "Feedback from web site";
 
-$mailcontent = "Customer name: ".filter_var($name)."\n".
-               "Customer email: ".$email."\n".
-               "Customer comments:\n".$feedback."\n";
+$mailcontent = "Customer name: " . htmlspecialchars($name) . "\n" .
+    "Customer email: " . htmlspecialchars($email) . "\n" .
+    "Customer comments: " . htmlspecialchars($feedback) . "\n";
 
 $fromaddress = "From: webserver@example.com";
 
-//invoke mail() function to send mail
+// Invoke mail() function to send mail
 mail($toaddress, $subject, $mailcontent, $fromaddress);
 
+// Provide user feedback
+echo "Thank you for your feedback.";
 ?>
+
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Bob's Auto Parts - Feedback Submitted</title>
-  </head>
-  <body>
+</head>
+<body>
+<h1>Feedback submitted</>
+<br>
 
-    <h1>Feedback submitted</h1>
-    <p>Your feedback has been sent.</p>
-
-  </body>
+<p>Your feedback message is:</p>
+<ul>
+    <li>Your Name: <?php echo htmlspecialchars($name); ?></li>
+    <li>Your Email: <?php echo htmlspecialchars($email); ?></li>
+    <li>Your Feedback: <?php echo nl2br(htmlspecialchars($feedback)); ?></li>
+</ul>
+</body>
 </html>

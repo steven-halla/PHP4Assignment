@@ -1,34 +1,32 @@
 <?php
+$name = $_POST['name'];
+$email = $_POST['email'];
+$feedback = $_POST['feedback'];
 
-//create short variable names
-$name = trim($_POST['name']);
-$email = trim($_POST['email']);
-$feedback = trim($_POST['feedback']);
+// Replace newlines in the feedback with " || "
+$feedback = str_replace(array("\r\n", "\n", "\r"), ' || ', $feedback);
 
-//set up some static information
 $toaddress = "feedback@example.com";
-
 $subject = "Feedback from web site";
 
-$mailcontent = "Customer name: ".str_replace("\r\n", "", $name)."\n".
-               "Customer email: ".str_replace("\r\n", "",$email)."\n".
-               "Customer comments:\n".str_replace("\r\n", "",$feedback)."\n";
+$mailcontent = "Customer name: " . $name . " " .
+    "Customer email: " . $email . " " .
+    "Customer comments: " . $feedback;
 
 $fromaddress = "From: webserver@example.com";
 
-//invoke mail() function to send mail
+// Send the email
 mail($toaddress, $subject, $mailcontent, $fromaddress);
-
 ?>
+
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Bob's Auto Parts - Feedback Submitted</title>
-  </head>
-  <body>
-
-    <h1>Feedback submitted</h1>
-    <p>Your feedback (shown  below) has been sent.</p>
-    <p><?php echo nl2br(htmlspecialchars($feedback)); ?> </p>
-  </body>
+<head>
+    <title>Feedback Submitted</title>
+</head>
+<body>
+<h1>Feedback submitted</h1>
+<p>Your feedback (shown below) has been sent.</p>
+<p><?php echo nl2br(htmlspecialchars($feedback)); ?></p>
+</body>
 </html>
